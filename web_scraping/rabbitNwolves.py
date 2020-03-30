@@ -24,7 +24,19 @@ def grab_details_rabbwolf(url):
     for instruction in recipe_instructions_detail:
         instructions_list.append(instruction.text)
 
-    return ingredients_list, instructions_list
+    image_detail = soup.find("div", attrs={'class': 'wprm-recipe-image'})
+
+    try:
+        if image_detail.img['src']:
+            image = image_detail.img['src']
+            image = str(image.replace("150", "500"))
+
+    except Exception as e:
+
+        image = None
+        pass
+
+    return ingredients_list, instructions_list, image
 
 # Function to grab link from rabbit and wolves recipes page
 def rabbitandwolves():
@@ -53,15 +65,18 @@ def rabbitandwolves():
 
         link = my_dict[recipe_name]
         details = grab_details_rabbwolf(link[0])
-        ingredients, instructions = details
+        ingredients, instructions, image = details
 
         my_dict[recipe_name].append(ingredients)
         my_dict[recipe_name].append(instructions)
+        my_dict[recipe_name].append(image)
+
+        print(my_dict)
 
     return my_dict
 
 dict = rabbitandwolves()
 
-df = pd.DataFrame(dict.values(), index=dict.keys(), columns=['Link', 'Ingredients', 'Instructions'])
+df = pd.DataFrame(dict.values(), index=dict.keys(), columns=['Link', 'Ingredients', 'Instructions', 'Image'])
 
-df.to_excel('rabbitandwolves_recipes.xlsx')
+df.to_excel('/Users/garretteichhorn/Desktop/github_repos/recipe_generator/excel_files/rabbitandwolves_recipes.xlsx')

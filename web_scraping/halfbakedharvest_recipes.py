@@ -24,7 +24,21 @@ def grab_details_hbh(url):
     for instruction in recipe_instructions_detail:
         instructions_list.append(instruction.text)
 
-    return ingredients_list, instructions_list
+    # Extract Image
+    post_content = soup.find("div", attrs={"class": "post-content"}).find_all_next("img")
+    image_list = []
+    for img in post_content:
+        try:
+            if img['alt']:
+                string = str(img['alt'])
+                if "horizontal photo" in string:
+                    image = img['data-src']
+                    image_list.append(image)
+
+        except Exception as e:
+            pass
+
+    return ingredients_list, instructions_list, image_list
 
 # Function to grab link from half baked harvest recipes page
 def halfbakedharvest():
@@ -34,7 +48,7 @@ def halfbakedharvest():
     url = 'https://www.halfbakedharvest.com/category/recipes/'
     browser.visit(url)
 
-    for x in range(1, 2):
+    for x in range(1, 10):
 
         html = browser.html
         soup = BeautifulSoup(html, 'html.parser')
@@ -47,21 +61,29 @@ def halfbakedharvest():
             my_dict[recipe.img['title']] = [recipe_link]
 
         # Iterate through to the next page
-        browser.click_link_by_partial_text('Next')
+        browser.visit(f"{url}page/{x}/")
 
     for recipe_name in my_dict:
 
         link = my_dict[recipe_name]
         details = grab_details_hbh(link[0])
-        ingredients, instructions = details
+        ingredients, instructions, image = details
 
         my_dict[recipe_name].append(ingredients)
         my_dict[recipe_name].append(instructions)
+        if image:
+            my_dict[recipe_name].append(image[0])
+        else:
+            print("Image not found!")
+
+        print(my_dict)
 
     return my_dict
 
 dict = halfbakedharvest()
 
-df = pd.DataFrame(dict.values(), index=dict.keys(), columns=['Link', 'Ingredients', 'Instructions'])
+df = pd.DataFrame(dict.values(), index=dict.keys(), columns=['Link', 'Ingredients', 'Instructions', "Image"])
 
-df.to_excel('halfbakedharvest_recipes.xlsx')
+print(df.head())
+
+df.to_excel("/Users/garretteichhorn/Desktop/github_repos/recipe_generator/excel_files/halfbakedharvest_recipes.xlsx")
