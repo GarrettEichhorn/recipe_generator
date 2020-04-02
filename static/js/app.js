@@ -33,7 +33,6 @@ function buildTable(data) {
   document.getElementById("Instructions").innerHTML = res;
 
   // Change image sizing
-  console.log(specific_recipe.Image);
   document.getElementById("image1").src = specific_recipe.Image;
 
   for (var i = 0; i < ingredients.length; i++) {
