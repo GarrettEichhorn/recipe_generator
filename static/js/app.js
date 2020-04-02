@@ -29,7 +29,19 @@ function buildTable(data) {
 
   document.getElementById("Title").innerHTML = specific_recipe.Recipe_Name;
   document.getElementById("Instructions").innerHTML = res;
+
+  // Image sizing for different versions...
+  var image_string = specific_recipe.Image;
+  var image_substring = "725x725.jpg"
+
+  if (image_string.includes(image_substring) === true) {
+
+      var image_class = document.getElementById("image_responsive");
+      image_class.setAttribute("class", "embed-responsive embed-responsive-4by3");
+  }
+
   document.getElementById("image1").src = specific_recipe.Image;
+  console.log(specific_recipe.Image)
 
   for (var i = 0; i < ingredients.length; i++) {
 
