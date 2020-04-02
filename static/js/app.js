@@ -10,6 +10,8 @@ var recipe_values = Object.values(recipe_var);
 
 for (var i = 0; i < recipe_keys.length; i++) {
 
+    console.log(i);
+
     if (i === 3) {
         var strip = recipe_values[i].replace(/[\])}[{(]/g, '');
         var ingredients = strip.split("', '");
