@@ -10,8 +10,6 @@ var recipe_values = Object.values(recipe_var);
 
 for (var i = 0; i < recipe_keys.length; i++) {
 
-    console.log(i);
-
     if (i === 3) {
         var strip = recipe_values[i].replace(/[\])}[{(]/g, '');
         var ingredients = strip.split("', '");
@@ -31,8 +29,6 @@ function buildTable(data) {
 
   document.getElementById("Title").innerHTML = specific_recipe.Recipe_Name;
   document.getElementById("Instructions").innerHTML = res;
-
-  // Change image sizing
   document.getElementById("image1").src = specific_recipe.Image;
 
   for (var i = 0; i < ingredients.length; i++) {
