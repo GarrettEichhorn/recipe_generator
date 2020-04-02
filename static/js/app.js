@@ -10,11 +10,11 @@ var recipe_values = Object.values(recipe_var);
 
 for (var i = 0; i < recipe_keys.length; i++) {
 
-    if (i === 2) {
+    if (i === 3) {
         var strip = recipe_values[i].replace(/[\])}[{(]/g, '');
         var ingredients = strip.split("', '");
     }
-    else if (i === 3) {
+    else if (i === 4) {
         var strip = recipe_values[i].replace(/[\])}[{(]/g, '');
         var instructions = strip.split("', '");
         var res = instructions.join(" <br> ");
@@ -29,6 +29,9 @@ function buildTable(data) {
 
   document.getElementById("Title").innerHTML = specific_recipe.Recipe_Name;
   document.getElementById("Instructions").innerHTML = res;
+
+  // Change image sizing
+  console.log(specific_recipe.Image);
   document.getElementById("image1").src = specific_recipe.Image;
 
   for (var i = 0; i < ingredients.length; i++) {
