@@ -7,11 +7,18 @@ executable_path = {'executable_path': '/usr/local/bin/chromedriver'}
 browser = Browser('chrome', **executable_path, headless=False)
 
 # Function to grab ingredients and instructions from bon appetit inner-page
-def grab_details_bonappetit(url):
+def grab_recipe_details(url):
 
     browser.visit(url)
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
+
+    # Extract Summary
+    recipe_summary = soup.find('h2', attrs={'class': 'dek--basically'})
+    if recipe_summary is not None:
+        summary = recipe_summary.text
+    else:
+        summary = ""
 
     # Extract Ingredients
     recipe_ingredients_detail = soup.find_all('li', attrs={'class': 'ingredient'})
@@ -33,12 +40,12 @@ def grab_details_bonappetit(url):
     s = str(string)
     img = s[:s.find("1x") - 1]
 
-    return ingredients_list, instructions_list, img
+    return summary, ingredients_list, instructions_list, img
 
 # Function to grab link from bon appetit recipes page
 def bonappetit():
 
-    my_dict = {}
+    recipe_dict = {}
 
     url = 'https://www.bonappetit.com/gallery/simple-recipes-five-ingredients'
     browser.visit(url)
@@ -53,28 +60,29 @@ def bonappetit():
         for recipe in recipes:
 
             recipe_link = recipe.div.a['href']
-            my_dict[recipe.div.a.h2.text] = [recipe_link]
+            recipe_dict[recipe.div.a.h2.text] = [recipe_link]
 
-    for recipe_name in my_dict:
+    for recipe_name in recipe_dict:
 
-        link = my_dict[recipe_name]
+        link = recipe_dict[recipe_name]
 
-        time.sleep(40)
+        time.sleep(55)
 
-        details = grab_details_bonappetit(link[0])
-        ingredients, instructions, image = details
+        details = grab_recipe_details(link[0])
+        summary, ingredients, instructions, image = details
 
-        my_dict[recipe_name].append(ingredients)
-        my_dict[recipe_name].append(instructions)
-        my_dict[recipe_name].append(image)
+        recipe_dict[recipe_name].append(summary)
+        recipe_dict[recipe_name].append(ingredients)
+        recipe_dict[recipe_name].append(instructions)
+        recipe_dict[recipe_name].append(image)
 
-        print(my_dict)
+        print(recipe_dict)
 
-    return my_dict
+    return recipe_dict
 
-dict = bonappetit()
+recipe_dict = bonappetit()
 
-df = pd.DataFrame(dict.values(), index=dict.keys(), columns=['Link', 'Ingredients', 'Instructions', 'Image'])
+df = pd.DataFrame(recipe_dict.values(), index=recipe_dict.keys(), columns=['Link', 'Summary', 'Ingredients', 'Instructions', 'Image'])
 
-df.to_excel('excel_files/bon_appetit_recipes.xlsx')
+df.to_excel('/Users/garretteichhorn/Desktop/github_repos/recipe_generator/excel_files/bon_appetit_recipes.xlsx')
 

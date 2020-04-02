@@ -16,7 +16,7 @@ def concat_files(root_path):
             df_list.append(df)
 
     for df in df_list:
-        df.columns = ["Recipe_Name", "Link", "Ingredients", "Instructions", "Image"]
+        df.columns = ["Recipe_Name", "Summary", "Link", "Ingredients", "Instructions", "Image"]
 
     df1 = pd.concat(df_list).reset_index(drop=True)
 
