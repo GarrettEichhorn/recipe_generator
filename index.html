@@ -29,7 +29,12 @@
       <h1>Recipe Generator</h1>
       <p>Use this app to generate recipe ideas!</p>
         <div class="active-cyan-3 active-cyan-4 mb-4">
-            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+            <input class="form-control" id='search_query' type="text"
+                   placeholder="Add a search term to generate specific recipes..." aria-label="Search">
+            <p></p>
+            <button class="btn btn-primary btn-lg" id="search-btn" type="button" >Search Recipes!</button>
+            <p></p>
+            <p id="search_num"></p>
         </div>
     </div>
    </div>
@@ -47,11 +52,11 @@
                   id="image1"
                   height=""
                   src="">
-              </img>
+          </img>
 
         </div>
-          <p>Click the button below to generate a new recipe!</p>
-          <button class="btn btn-primary btn-lg" id="filter-btn" type="button" >Generate Recipe!</button>
+          <p>Click the button below to generate a new, random recipe!</p>
+          <button class="btn btn-info btn-lg" id="filter-btn" type="button" >Generate Random Recipe</button>
 
         <h3>Ingredients:</h3>
         <table id="ingredients_table" class="table table-striped" align="center">

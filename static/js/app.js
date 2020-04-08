@@ -1,31 +1,44 @@
-const recipeData = data;
+// Grab data from the static JSON file
+var recipeData = data;
 
-var random_int = Object.keys(recipeData)[Math.floor(Math.random()*Object.keys(recipeData).length)];
+// Function to calculate random integer for recipe
+function generateRandomInteger(data) {
 
-var specific_recipe = recipeData[random_int];
+    // Select a random recipe using MATH
+    var random_int = Object.keys(recipeData)[Math.floor(Math.random()*Object.keys(recipeData).length)];
+    var specific_recipe = recipeData[random_int];
 
-var recipe_var = specific_recipe;
-var recipe_keys = Object.keys(recipe_var);
-var recipe_values = Object.values(recipe_var);
-
-for (var i = 0; i < recipe_keys.length; i++) {
-
-    if (i === 3) {
-        var strip = recipe_values[i].replace(/[\])}[{(]/g, '');
-        var ingredients = strip.split("', '");
-    }
-    else if (i === 4) {
-        var strip = recipe_values[i].replace(/[\])}[{(]/g, '');
-        var instructions = strip.split("', '");
-        var res = instructions.join(" <br> ");
-    }
+    return specific_recipe
 }
 
+// Grab Ingredients in HTML
 const ingredients_table = d3.select("#Ingredients");
 
+// Function to build the data using a parameter data
 function buildTable(data) {
-  // First, clear out any existing data
-  ingredients_table.html("");
+
+    // First, clear out any existing data
+    ingredients_table.html("");
+
+    specific_recipe = generateRandomInteger(data);
+
+    // Instantiate relevant variables for quick retrieval
+    var recipe_keys = Object.keys(specific_recipe);
+    var recipe_values = Object.values(specific_recipe);
+
+    // basic string replace to 'clean-up' and format array response for ingredients and instructions
+    for (var i = 0; i < recipe_keys.length; i++) {
+
+        if (i === 3) {
+            var strip = recipe_values[i].replace(/[\])}[{(]/g, '');
+            var ingredients = strip.split("', '");
+        }
+        else if (i === 4) {
+            var strip = recipe_values[i].replace(/[\])}[{(]/g, '');
+            var instructions = strip.split("', '");
+            var res = instructions.join(" <br> ");
+        }
+    }
 
   document.getElementById("Title").innerHTML = specific_recipe.Recipe_Name;
   document.getElementById("Instructions").innerHTML = res;
@@ -41,7 +54,6 @@ function buildTable(data) {
   }
 
   document.getElementById("image1").src = specific_recipe.Image;
-  console.log(specific_recipe.Image)
 
   for (var i = 0; i < ingredients.length; i++) {
 
@@ -52,13 +64,47 @@ function buildTable(data) {
     }
 }
 
-function handleClick() {
+// Function to handle the search criteria via button click
+function handleClickSearch() {
 
+    const query = d3.select('#search_query').property("value");
+
+    if (query) {
+        console.log(query);
+        document.getElementById("search_query").placeholder=query;
+
+        var url = "http://127.0.0.1:5000/api/search/";
+        var updated_url = url + query;
+
+        fetch(updated_url)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+
+                recipeData = data;
+                buildTable(recipeData);
+                var num_query_results = recipeData.length;
+
+                document.getElementById("search_num").innerHTML = "Your query returned " + num_query_results + " results.";
+          })
+
+          .catch(function (err) {
+            console.log(err);
+          });
+    }
+}
+
+// Function to generate new recipes for random generator
+function handleClickRandom() {
   window.location.reload();
 }
 
-// Attach an event to listen for the form button
-d3.selectAll("#filter-btn").on("click", handleClick);
+// Attach an event to listen for the search recipes button
+d3. select("#search-btn").on("click", handleClickSearch);
+
+// Attach an event to listen for the generate random recipe button
+d3.select("#filter-btn").on("click", handleClickRandom);
 
 // Build the table when the page loads
-buildTable(specific_recipe);
+buildTable(recipeData);
