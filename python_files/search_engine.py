@@ -1,4 +1,4 @@
-from python_files.concat_files import rootdir, concat_files
+from python_files.concat_files import concat_files, root_path
 
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -6,7 +6,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 # Concatenate files and drop null values
-df = concat_files(rootdir)
+df = concat_files(root_path)
 dataframe = df[df['Image'].notna()]
 
 # Combine text columns

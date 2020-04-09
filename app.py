@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask
 from flask_cors import CORS
 import pandas as pd
 from python_files.search_engine import return_relevant_recipes
@@ -36,9 +36,9 @@ def search_query(query=None):
             data
         )
 
-    except KeyError:
+    except Exception as e:
         return (
-            f"Null"
+            f"{e}"
     )
 
 if __name__ == '__main__':

@@ -3,12 +3,9 @@ Web Scraping with Splinter and requests!
 """
 
 from bs4 import BeautifulSoup
-from selenium import webdriver
 from splinter import Browser
 import requests
-import time
 import pandas as pd
-from pprint import pprint
 
 # -------
 # Function to grab page details with Splinter!
