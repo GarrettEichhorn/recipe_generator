@@ -45,7 +45,7 @@ function buildTable(data) {
 
   // Image sizing for different versions...
   var image_string = specific_recipe.Image;
-  var image_substring = "725x725.jpg"
+  var image_substring = "725x725.jpg";
 
   if (image_string.includes(image_substring) === true) {
 
@@ -73,7 +73,7 @@ function handleClickSearch() {
         console.log(query);
         document.getElementById("search_query").placeholder=query;
 
-        var url = "http://127.0.0.1:5000/api/search/";
+        var url = "https://reciperfect.herokuapp.com/api/search/";
         var updated_url = url + query;
 
         fetch(updated_url)
