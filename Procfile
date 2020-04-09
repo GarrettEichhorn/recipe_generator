@@ -1,1 +1,0 @@
-web: gunicorn recipe_generator.app:app
