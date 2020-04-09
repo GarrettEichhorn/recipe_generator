@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-root_path = os.path.join('..', 'excel_files')
+root_path = '/excel_files'
 
 # Function to concat files, assuming same structure
 def concat_files(root_path):
