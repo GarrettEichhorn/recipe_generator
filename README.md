@@ -8,17 +8,17 @@ This application was created to make Sunday meal planning easier! Gone are the d
 
 This app scrapes data from several popular recipe websites...
 
-* [Bon Appétit](https://www.bonappetit.com/)
+* [Bon Appétit](https://www.bonappetit.com/)  
     ** Scraped with BS4 via Splinter (abstract layer for Selenium)  
-* [Half Baked Harvest](https://www.halfbakedharvest.com/)
+* [Half Baked Harvest](https://www.halfbakedharvest.com/)  
     ** Scraped with BS4 via Splinter  
-* [Ambitious Kitchen](https://www.ambitiouskitchen.com/)
+* [Ambitious Kitchen](https://www.ambitiouskitchen.com/)  
     ** Scraped with BS4 via requests  
 
-... and amalgamates the data for quick retrieval via website (linked above).
+... and stores the data for quick retrieval via website (linked above).
 
 -----
 
 Websites are scraped with different technology to demonstrate functional expertise.
 
-You can run the app (in a serverless environment) by visiting the link above. To query the data via search criterion, please download the repository and run the app.py file via flask directly from the terminal. Then, visit the link and search until your heart's content!
+The app calls an api built on heroku that references a custom search engine. You can view the [source code](https://github.com/GarrettEichhorn/recipe_api_app) here!
